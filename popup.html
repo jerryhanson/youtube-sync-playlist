@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YouTube Sync Control</title>
+    <style>
+        body { width: 380px; font-family: sans-serif; padding: 10px; }
+        h3 { margin-top: 5px; margin-bottom: 15px; text-align: center; }
+        .section { border: 1px solid #ddd; border-radius: 5px; padding: 10px; margin-bottom: 15px; background-color: #f9f9f9;}
+        .section h4 { margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; font-size: 1em; color: #333;}
+        .row { display: flex; align-items: center; margin-bottom: 10px; }
+        .row .label { flex-basis: 130px; margin-right: 10px; font-weight: bold; font-size: 0.9em; text-align: right; flex-shrink: 0; }
+        .row .control { flex-grow: 1; display: flex; align-items: center; }
+        .row button { padding: 6px 10px; font-size: 0.9em; margin-right: 10px; flex-shrink: 0; }
+        .row select, .row input[type="number"], .row .status-display {
+            width: 100%; padding: 6px; font-size: 0.9em; box-sizing: border-box;
+            background-color: white; border: 1px solid #ccc; border-radius: 4px;
+            min-height: 32px; line-height: 18px;
+        }
+        .status-display { text-align: center; background-color: #eee; }
+        .action-buttons button, #resetAuthButton {
+            width: 100%; padding: 8px; margin-top: 8px; border: none;
+            color: white; cursor: pointer; border-radius: 4px;
+        }
+        .button-primary { background-color: #4CAF50; }
+        .button-secondary { background-color: #757575; }
+        #resetAuthButton { background-color: #db4437; margin-top: 15px;}
+        #status { /* General status message area */
+            margin-top: 15px; font-size: 0.9em; min-height: 1.2em; text-align: center;
+            padding: 8px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; display: none; /* Hide initially */
+        }
+        #autoSyncStatus { /* Blue status bar */
+             margin-top: 10px; font-size: 0.9em; min-height: 1.2em; text-align: center;
+             padding: 8px; background-color: #e0f7fa; border: 1px solid #b2ebf2; border-radius: 4px; color: #006064;
+        }
+        #syncHistory { /* Sync history bar */
+             margin-top: 10px; font-size: 0.9em; min-height: 1.2em; text-align: center;
+             padding: 8px; background-color: #f4f4f4; border: 1px solid #ddd; border-radius: 4px;
+        }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+        input[type="file"] { display: none; }
+        .middle-buttons { display: flex; gap: 5px; margin-bottom: 5px; }
+        .middle-buttons button { flex-grow: 1; margin: 0; }
+        .warning { font-size: 0.8em; color: #777; margin-top: 5px; text-align: center;}
+    </style>
+</head>
+<body>
+    <h3>Manual YouTube Sync</h3>
+
+    <div class="section">
+        <h4>Load Data from YouTube</h4>
+        <button id="loginButton">Login to YouTube / Check Auth</button>
+        <div class="row">
+            <button id="loadPlaylistsButton" class="button-secondary">Load Playlists</button>
+            <div class="control">
+                <select id="playlists">
+                    <option value="">Click 'Load Playlists'</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="middle-buttons" style="width:100%">
+                 <button id="loadSubsButton" class="button-secondary">Load Subs (YT)</button>
+                 <button id="importSubsButton" class="button-secondary">Load Subs (JSON)</button>
+            </div>
+        </div>
+         <div class="row">
+             <div class="label">Channels Loaded:</div>
+             <div class="control">
+                <div id="channelCountDisplay" class="status-display">0 channels</div>
+            </div>
+         </div>
+    </div>
+
+    <div class="section">
+        <h4>Settings & Actions</h4>
+         <div class="row">
+             <div class="label">Auto Sync Freq (mins):</div>
+             <div class="control">
+                 <input type="number" id="syncFrequency" min="0" value="60"> </div>
+        </div>
+         <p class="warning">
+             Set to 0 to disable auto-sync. Below 60 mins risks API errors ('403').
+         </p>
+         <button id="saveSettingsButton" class="button-secondary">Save Settings & Update Auto Sync</button>
+         <button id="exportSubsButton" class="button-secondary">Export Channel List (JSON)</button>
+    </div>
+
+    <div class="action-buttons">
+        <button id="syncButton" class="button-primary">Run Manual Sync Now</button>
+    </div>
+     <div id="autoSyncStatus">Checking auto-sync status...</div> <div id="syncHistory">Last Sync: Never</div> <div id="status"></div> <button id="resetAuthButton">Log Out & Reset</button>
+
+    <input type="file" id="fileInput" accept=".json">
+
+    <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Subscription Sync",
+  "version": "9.0", // Or your current version
+  "description": "Manually or automatically syncs selected YouTube subscriptions to a playlist.",
+  "permissions": [
+    "identity",
+    "storage",
+    "offscreen",
+    "alarms"
+  ],
+  "host_permissions": [
+    "https://*.googleapis.com/",
+    "https://*.youtube.com/"
+    // Removed rss65 domain
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "offscreen": {
+    "paths": ["offscreen.html"],
+    "reasons": ["DOM_PARSER"],
+    "justification": "Required to parse the XML from YouTube channel RSS feeds."
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  },
+  "oauth2": {
+    "client_id": "YOUR_CLIENT_ID_GOES_HERE.apps.googleusercontent.com", // Reset Client ID
+    "scopes": [
+      "https://www.googleapis.com/auth/youtube"
+    ]
+  }
+}
